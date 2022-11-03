@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  backend:
+    container_name: flaskbackend
+    build: ./
+    image: flaskbackend:v1
+    ports:
+      - "5001:5001"
+    depends_on:
+        - "postgresflask"
+  postgresflask:
+    logging:
+      driver: none
+    environment:
+      - POSTGRES_USER=flask
+      - POSTGRES_PASSWORD=flask
+      - POSTGRES_DB=flask
+    container_name: postgresflask
+    image: "postgres:15.0"
+    expose:
+      - "5432"

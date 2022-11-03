@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  backend:
+    container_name: fastapibackend
+    build: ./
+    image: fastapibackend:v1
+    ports:
+      - "5000:5000"
+    depends_on:
+        - "postgresfastapi"
+  postgresfastapi:
+    environment:
+      - POSTGRES_USER=fastapi
+      - POSTGRES_PASSWORD=fastapi
+      - POSTGRES_DB=fastapi
+    container_name: postgresfastapi
+    image: "postgres:15.0"
+    ports:
+      - "5432:5432"

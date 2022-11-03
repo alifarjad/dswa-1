@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            @import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+
+            *, *:before, *:after {
+            -webkit-box-sizing: inherit;
+            -moz-box-sizing: inherit;
+            box-sizing: inherit;
+            }
+
+            ::-webkit-input-placeholder {
+            color: #56585b;
+            }
+
+            ::-moz-placeholder {
+            color: #56585b;
+            }
+
+            :-moz-placeholder {
+            color: #56585b;
+            }
+
+            html {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            }
+
+            body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            background: url('https://media.comicbook.com/2017/12/pepe-1066712.png') no-repeat center center fixed, linear-gradient(to bottom, #0059ce 0%, #f1d900 100%);
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size: cover;
+            color: #0a0a0b;
+            overflow: hidden;
+            }
+
+            h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 1.5rem;
+            }
+
+            .cover  {
+            height: 100vh;
+            width: 100%;
+            background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.05)), to(rgba(0,0,0,0)));
+            background: -webkit-linear-gradient(top, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
+            padding: 20px 50px;
+            display: -webkit-box;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            }
+
+            .flex-form input[type="submit"] {
+            background: #ef683f;
+            border: 1px solid #ef3f5a;
+            color: #fff;
+            padding: 0 30px;
+            cursor: pointer;
+            -webkit-transition: all 0.2s;
+            -moz-transition: all 0.2s;
+            transition: all 0.2s;
+            }
+
+            .flex-form input[type="submit"]:hover {
+            background: #d73851;
+            border: 1px solid #d73851;
+            }
+
+            .flex-form {
+            display: -webkit-box;
+            display: flex;
+            z-index: 10;
+            position: relative;
+            width: 792px;
+            box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.3);
+            }
+
+            .flex-form > * {
+            border: 0;
+            padding: 0 0 0 10px;
+            background: #fff;
+            line-height: 50px;
+            font-size: 1rem;
+            border-radius: 0;
+            outline: 0;
+            -webkit-appearance: none;
+            }
+
+            input[type="search"] {
+            flex-basis: 500px;
+            }
+
+            @media all and (max-width:800px) {
+            body {
+                font-size: 0.9rem;
+            }
+
+            .flex-form {
+                width: 100%;
+            }
+
+            input[type="search"] {
+                flex-basis: 100%;
+            }
+
+            .flex-form > * {
+                font-size: 0.9rem;
+            }
+
+            header {
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                flex-direction: column;
+                padding: 10px !important;
+            }
+            
+            h2 {
+                color: #fff;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cover {
+                padding: 20px;
+            }
+            }
+
+            @media all and (max-width:360px) {
+            header nav li{
+                margin: 0 10px;
+            }
+
+            .flex-form {
+                display: -webkit-box;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                flex-direction: column;
+            }
+
+            input[type="search"] {
+                flex-basis: 0;
+            }
+
+            label {
+                display: none;
+            }
+            }
+        </style>
+        <script>
+            function al() {
+                url = document.getElementById("url").value
+                fetch('/url', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: '{ "url" : "'+url+'"}',
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log('Success:', data);
+                        output = document.getElementById("output")
+                        output.innerHTML = '<a href="'+data.url+'">'+data.url+'</a> is now at <a href="'+data.shortened+'">'+data.shortened+'</a>'
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        output = document.getElementById("output")
+                        output.innerHTML = 'Error occured, try again or later'
+                    });
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="cover">
+                <h1>Shorten your url for free.</h1>
+                <form  class="flex-form">
+                <input id=url type="search" placeholder="Paste your url here">
+                <input type="submit" value="Shorten" formaction="javascript:al()">
+                <input type="submit" value="I'm feeling lucky" formaction='/random'>
+                </form>
+            <h2 id=output style="background-color:white"></h2>
+            </div>
+        </div>
+    </body>
+</html>
