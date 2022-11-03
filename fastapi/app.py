@@ -60,10 +60,6 @@ async def index():
         data = fh.read()
     return Response(content=data, media_type="text/html")
 
-@app.get('/health')
-async def get_health():
-    return JSONResponse(content={ 'status':'ok' })
-
 @app.post('/url')
 async def shorten_url(item: UrlMappingRequest):
     url_to_shorten = item.url

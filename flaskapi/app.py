@@ -46,10 +46,6 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/health', methods=['GET'])
-def get_health():
-    return jsonify({ 'status':'ok' }), 200
-
 @app.route('/url', methods=['POST'])
 def shorten_url():
     url_to_shorten = request.json.get('url', None)
