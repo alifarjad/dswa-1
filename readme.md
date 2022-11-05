@@ -1,5 +1,7 @@
 # CS-E4770 - Project 1
+
 ## Url shortener
+
 There are three implementation for the server: Flask, FastAPI, Express.js. A server has the following endpoints:
 - `GET /` Serves the webpage
 - `GET/<shortened>` Redirects to the url mapped to the value `<shortened>` and returns a `404 Not found` error if the provided value is incorrect.
@@ -18,10 +20,12 @@ Each server is coupled with its own instance of PostgreSQL and is listening for 
 
 
 ## How to run
+
 To run the servers you need to install Docker, the version used at development time was `20.10.18, build b40c2f6`.
 Go in the projects folder
+
 ### For Flask
-    
+    ```
     # To run
     cd flaskapi/
     docker compose build
@@ -30,9 +34,10 @@ Go in the projects folder
     cd flaskapi/
     docker compose down
     docker compose kill (if the one above does not work)
+    ```
 
 ### For FastAPI
-
+    ```
     # To run
     cd fastapi/
     docker compose build
@@ -41,6 +46,7 @@ Go in the projects folder
     cd fastapi/
     docker compose down
     docker compose kill (if the one above does not work)
+    ```
 
 ### For ExpressJS
     ```
