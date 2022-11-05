@@ -28,7 +28,7 @@ Go in the projects folder
     # To run
     cd flaskapi/
     docker compose build
-    docker compose up --attach backend
+    docker compose up --detach
     # To stop
     cd flaskapi/
     docker compose down
@@ -38,7 +38,7 @@ Go in the projects folder
     # To run
     cd fastapi/
     docker compose build
-    docker compose up --attach backend
+    docker compose up --detach
     # To stop
     cd fastapi/
     docker compose down
@@ -48,7 +48,7 @@ Go in the projects folder
     # To run
     cd nodeapi/
     docker compose build
-    docker compose up --attach backend
+    docker compose up --detach
     # To stop
     cd nodeapi/
     docker compose down
