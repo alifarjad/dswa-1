@@ -56,6 +56,63 @@ Go in the projects folder
 
 All the servers can be run together since they do not share the same DBMS instance and listen on different ports.
 
+## Testing
+
+To test the application you need to install k6 in order to run the scripts. In order to run the tests you need to be in the project directory and the application you want to test running. It is advisable to run just one backend at a time if you don't have a powerful machine since it might affect performance.
+
+### FastAPI backend
+    
+- For `GET /` run `k6 run -e APP_URL=http://localhost:5000 index-load-test.js`
+- For `GET /<shortened_url>` run `k6 run -e APP_URL=http://localhost:5000 redirect-load-test.js`
+- For `GET /random` run `k6 run -e APP_URL=http://localhost:5000 randomredirect-load-test.js`
+- For `POST /url` run `k6 run -e APP_URL=http://localhost:5000 url-load-test.js`
+
+### Flask backend
+    
+- For `GET /` run `k6 run -e APP_URL=http://localhost:5001 index-load-test.js`
+- For `GET /<shortened_url>` run `k6 run -e APP_URL=http://localhost:5001 redirect-load-test.js`
+- For `GET /random` run `k6 run -e APP_URL=http://localhost:5001 randomredirect-load-test.js`
+- For `POST /url` run `k6 run -e APP_URL=http://localhost:5001 url-load-test.js`
+
+### Express backend
+    
+- For `GET /` run `k6 run -e APP_URL=http://localhost:5002 index-load-test.js`
+- For `GET /<shortened_url>` run `k6 run -e APP_URL=http://localhost:5002 redirect-load-test.js`
+- For `GET /random` run `k6 run -e APP_URL=http://localhost:5002 randomredirect-load-test.js`
+- For `POST /url` run `k6 run -e APP_URL=http://localhost:5002 url-load-test.js`
+
+## Load testing results:
+
+### `GET \`
+|           | avg     | med     | p(95)   | p(99)   | requests/second |
+| --------- | ------- | ------- | ------- | ------- | --------------- |
+| Flask     | 12.74ms | 12.65ms | 14.51ms | 16.20ms | 776             |
+| FastAPI   | 7.21ms  | 7.20ms  | 8.09ms  | 8.80ms  | 1354            |
+| ExpressJS | 4.42ms  | 4.06ms  | 6.95ms  | 8.88ms  | 2288            |
+
+### `GET \<shortened_url>`
+|           | avg     | med     | p(95)   | p(99)   | requests/second |
+| --------- | ------- | ------- | ------- | ------- | --------------- |
+| Flask     | 24.20ms | 23.86ms | 29.54ms | 34.35ms | 417             |
+| FastAPI   | 17.78ms | 17.45ms | 21.12ms | 24.36ms | 553             |
+| ExpressJS | 7.37ms  | 6.60ms  | 11.01ms | 14.30ms | 1385            |
+
+### `GET \random`
+|           | avg     | med     | p(95)   | p(99)   | requests/second |
+| --------- | ------- | ------- | ------- | ------- | --------------- |
+| Flask     | 23.24ms | 23.00ms | 28.68ms | 32.18ms | 429             |
+| FastAPI   | 17.48ms | 17.23ms | 20.29ms | 22.22ms | 386             |
+| ExpressJS | 6.70ms  | 6.02ms  | 10.12ms | 13.27ms | 1232            |
+
+### `POST \url`
+|           | avg     | med     | p(95)   | p(99)   | requests/second |
+| --------- | ------- | ------- | ------- | ------- | --------------- |
+| Flask     | 30.00ms | 29.71ms | 39.09ms | 43.55ms | 329             |
+| FastAPI   | 38.71ms | 37.61ms | 45.22ms | 50.58ms | 253             |
+| ExpressJS | 15.44ms | 14.01ms | 20.91ms | 25.05ms | 715             |
+
+
+
 [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
 Dillinger is a cloud-enabled, mobile-ready, offline-storage compatible,

@@ -1,7 +1,12 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
 const path = require('path');
 
-const sequelize = new Sequelize('postgres://express:express@postgresnode:5432/express');
+const sequelize = new Sequelize('postgres://express:express@postgresnode:5432/express', {pool: {
+    max: 50,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  }});
 
 const UrlMapping = sequelize.define('url_mappings', {
     id: {
@@ -9,7 +14,15 @@ const UrlMapping = sequelize.define('url_mappings', {
         primaryKey: true    
     },
     url: DataTypes.STRING
-});
+    }, {indexes: [
+        {
+            unique: true,
+            fields: ['id']
+        },
+        {
+        fields: ['url']
+        }]}
+    );
 
 //Trick to use await of top level
 connect_to_db(sequelize).then(()=>{console.log("Finished setting up DB.")}).catch(()=>{console.log("Error")})
@@ -39,29 +52,25 @@ app.get('/random', async (req, res) => {
         res.status(404)
         res.send('Not found')
     } else {
-        console.log("Redirect to" + mapping.url)
         res.redirect(mapping.url);
     }
 })
 
 app.get('/:id', async (req, res) => {
-    console.log(req.params['id'])
     mapping = await UrlMapping.findByPk(req.params['id']).catch((error) => {
         res.status(500)
         res.send('Internal server error')
     })
-    console.log(mapping)
     if(mapping==null || mapping==undefined) {
         res.status(404)
         res.send('Not found')
     } else {
-        console.log("Redirect to" + mapping.url)
         res.redirect(mapping.url);
     }
 })
 
 app.post('/url', async (req, res) => {
-    console.log(req.body.url.substring(0,9))
+
     if(req.body.url.substring(0,8)!='https://' && req.body.url.substring(0,7)!='http://') {
         res.status(400)
         res.send('Bad request')

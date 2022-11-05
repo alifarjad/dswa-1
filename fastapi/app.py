@@ -9,10 +9,6 @@ from sqlalchemy import Column, String
 from  sqlalchemy.sql.expression import func
 from pydantic import BaseModel
 
-import logging
-logging.basicConfig()
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
-
 #Docker
 #sudo apt install uvicorn
 #sudo apt-get install build-dep python-psycopg2
@@ -26,15 +22,16 @@ class UrlMappingRequest(BaseModel):
 
 ###Initialize DB and ORM
 engine = create_engine(
-    "postgresql+psycopg2://fastapi:fastapi@postgresfastapi:5432/fastapi",
+    "postgresql+psycopg2://fastapi:fastapi@postgresfastapi:5432/fastapi"
+    , pool_size=50, max_overflow=0
 )
 
 Base = declarative_base()
 class UrlMapping(Base):
      __tablename__ = "url_mappings"
 
-     id = Column(String(10),  primary_key=True)
-     url = Column(String)
+     id = Column(String(10),  primary_key=True, index=True)
+     url = Column(String, index=True)
 
      def __repr__(self):
          return "<UrlMapping(id='%s', url='%s')>" % (
@@ -75,15 +72,17 @@ async def shorten_url(item: UrlMappingRequest):
         )
     session = Session()
     url_mapping = session.query(UrlMapping).filter_by(url=url_to_shorten).first()
-    print(url_mapping)
     if not url_mapping:
         shortened = random_string_10()
         session.add(UrlMapping(id=shortened, url=url_to_shorten))
         session.commit()
+        session.close()
         return JSONResponse(content={ 'url': url_to_shorten, 'shortened' :  baseurl+shortened}, status_code=status.HTTP_201_CREATED)
     else:
+        shortened = url_mapping.id
         session.commit()
-        return JSONResponse(content={ 'url': url_mapping.url, 'shortened' :  baseurl+url_mapping.id}, status_code=status.HTTP_200_OK)
+        session.close()
+        return JSONResponse(content={ 'url': url_to_shorten, 'shortened' :  baseurl+shortened}, status_code=status.HTTP_200_OK)
 
 @app.get('/random')
 async def random_url():
@@ -91,28 +90,33 @@ async def random_url():
     url_mapping = session.query(UrlMapping).order_by(func.random()).limit(1).first()
     if not url_mapping:
         session.commit()
+        session.close()
         raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f'Url not found',
         )
     else:
+        url = url_mapping.url
         session.commit()
-        return RedirectResponse(url_mapping.url, status_code=status.HTTP_302_FOUND)
+        session.close()
+        return RedirectResponse(url, status_code=status.HTTP_302_FOUND)
 
 @app.get('/{shortened_url}')
 async def redirect_url(shortened_url):
     session = Session()
     url_mapping = session.query(UrlMapping).filter(UrlMapping.id==str(shortened_url)).first()
-    print(url_mapping)
     if not url_mapping:
         session.commit()
+        session.close()
         raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f'Url not found',
         )
     else:
+        url = url_mapping.url
         session.commit()
-        return RedirectResponse(url_mapping.url, status_code=status.HTTP_302_FOUND)
+        session.close()
+        return RedirectResponse(url, status_code=status.HTTP_302_FOUND)
 
 #Should give us 62^10 possible combinations
 def random_string_10():

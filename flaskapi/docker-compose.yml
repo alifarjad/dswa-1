@@ -9,8 +9,6 @@ services:
     depends_on:
         - "postgresflask"
   postgresflask:
-    logging:
-      driver: none
     environment:
       - POSTGRES_USER=flask
       - POSTGRES_PASSWORD=flask

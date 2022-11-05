@@ -15,5 +15,5 @@ services:
       - POSTGRES_DB=fastapi
     container_name: postgresfastapi
     image: "postgres:15.0"
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"

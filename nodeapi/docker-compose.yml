@@ -9,8 +9,6 @@ services:
     depends_on:
         - "postgresnode"
   postgresnode:
-    logging:
-      driver: none
     environment:
       - POSTGRES_USER=express
       - POSTGRES_PASSWORD=express
