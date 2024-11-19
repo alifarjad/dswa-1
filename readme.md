@@ -2,7 +2,7 @@
 
 ## Url shortener
 
-![](https://github.com/alifarjad/url-shortener/normalflow.gif)
+![](https://github.com/alifarjad/url-shortener/blob/main/normalflow.gif)
 
 There are three implementation for the server: Flask, FastAPI, Express.js. A server has the following endpoints:
 - `GET /` Serves the webpage
