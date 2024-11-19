@@ -1,4 +1,4 @@
-# CS-E4770 - Project 1
+# CS-E4770 - Simple scalable URL shortener
 
 ## Url shortener
 
