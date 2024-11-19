@@ -1,4 +1,4 @@
-# CS-E4770 - Simple scalable URL shortener
+# Simple scalable URL shortener
 
 ## Url shortener
 
