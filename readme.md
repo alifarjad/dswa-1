@@ -2,6 +2,8 @@
 
 ## Url shortener
 
+![](https://github.com/alifarjad/url-shortener/normalflow.gif)
+
 There are three implementation for the server: Flask, FastAPI, Express.js. A server has the following endpoints:
 - `GET /` Serves the webpage
 - `GET/<shortened>` Redirects to the url mapped to the value `<shortened>` and returns a `404 Not found` error if the provided value is incorrect.
@@ -12,12 +14,15 @@ There are three implementation for the server: Flask, FastAPI, Express.js. A ser
         "url" : "http://facebook.com"
     }
     ```
+![](https://github.com/alifarjad/url-shortener/blob/main/httperror.gif)
+
 The webpage has a simple ui where there are a text input field and two buttons. The button `Shorten` will send a request to shorten the url specified in the text field. The button `I'm feeling lucky` will take the user to a url that the server has mapped.
 Each server is coupled with its own instance of PostgreSQL and is listening for traffic on different ports, to be specific:
 - FastAPI server is listening on port 5000
 - Flask server is listening on port 5001
 - ExpressJS server is listening on port 5002
 
+![](https://github.com/alifarjad/url-shortener/blob/main/feelinglucky.gif)
 
 ## How to run
 
